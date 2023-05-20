@@ -1,7 +1,7 @@
 from langchain import PromptTemplate
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import LLMChain
-
+from third_parties.linkedin import scrape_linkedin_profile
 information = """
 Virat Kohli (Hindi pronunciation: [ʋɪˈɾɑːʈ ˈkoːɦli] (listen); born 5 November 1988) is an Indian international cricketer and the former captain of the Indian national cricket team who plays as a right-handed batsman for Royal Challengers Bangalore in the IPL and for Delhi in Indian domestic cricket. Widely regarded as one of the greatest batsmen of all time, and the best of his time, as well in the current era.[4] Kohli holds the records for scoring most runs in T20 internationals and in the IPL. In 2020, the International Cricket Council named him the male cricketer of the decade. Kohli has also contributed to a number of India's successes, including winning the 2011 World Cup and the 2013 Champions trophy.
 
@@ -23,7 +23,7 @@ if __name__ == "__main__":
     print("Hello Langchain")
 
     summary_template = """
-    given the information {information} about a person I want you to create:
+    given the Linkedin information {information} about a person I want you to create:
         1. a short summary
         2. two interesting facts about them
     """
@@ -36,4 +36,7 @@ if __name__ == "__main__":
 
     chain = LLMChain(llm=llm, prompt=summary_prompt_template)
 
-    print(chain.run(information=information))
+    #print(chain.run(information=information))
+
+    linkedin_data = scrape_linkedin_profile(linkedin_profile_url='https://www.linkedin.com/in/rishav-goutam-soam/')
+    print(chain.run(information=linkedin_data))
